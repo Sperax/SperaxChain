@@ -140,7 +140,8 @@ func ApplyTransaction(config *params.ChainConfig, bc ChainContext, author *commo
 	txGasFee.Mul(big.NewInt(0).SetUint64(receipt.GasUsed), tx.GasPrice())
 	if txGasFee.Cmp(common.Big0) == 1 {
 		halfUsed := txGasFee.Div(txGasFee, common.Big2)
-		// temp fork in economy
+		// BUG: remove this testnet fork in mainnet
+		// temp fork in testnet debugging
 		if header.Number.Uint64() < 593668 {
 			statedb.SubBalance(header.Coinbase, halfUsed)
 		}
