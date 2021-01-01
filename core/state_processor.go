@@ -140,7 +140,10 @@ func ApplyTransaction(config *params.ChainConfig, bc ChainContext, author *commo
 	txGasFee.Mul(big.NewInt(0).SetUint64(receipt.GasUsed), tx.GasPrice())
 	if txGasFee.Cmp(common.Big0) == 1 {
 		halfUsed := txGasFee.Div(txGasFee, common.Big2)
-		//statedb.SubBalance(header.Coinbase, halfUsed)
+		// temp fork in economy
+		if header.Number.Uint64() < 593668 {
+			statedb.SubBalance(header.Coinbase, halfUsed)
+		}
 		statedb.AddBalance(bdls_engine.GasFeeAddress, halfUsed)
 	}
 
